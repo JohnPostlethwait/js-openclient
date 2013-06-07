@@ -13,5 +13,6 @@ module.exports = {
   Keystone: require("./keystone/v2.0/client"),
   Nova: require("./nova/v1.1/client"),
   Swift: require("./swift/v1/client"),
+  Ceilometer: require("./ceilometer/v2/client"),
   Heat: require("./heat/v1/client")
 };
