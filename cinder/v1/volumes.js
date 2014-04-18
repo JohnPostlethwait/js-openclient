@@ -46,6 +46,28 @@ var VolumeManager = base.Manager.extend({
     return nova.servers.attach(params, callback);
   },
 
+  // Returns a count of volumes that have a specific Volume Type id.
+  get_count_by_volume_type_id: function (params, callback) {
+    var original_success = params.success || callback;
+
+    delete params.success;
+    params.success = counterCallback;
+
+    function counterCallback (volumes, xhr) {
+console.log('CALLING THIS BULLSHIT')
+      var num_volumes_of_type = 0;
+console.log(require('util').inspect(arguments))
+      volumes.forEach(function (volume) {
+        if (volume.volume_type === 'nebula') num_volumes_of_type = num_volumes_of_type + 1;
+      });
+console.log(num_volumes_of_type);
+console.log(original_success.toString())
+      original_success({ id: '__all__', length: num_volumes_of_type }, xhr);
+    }
+
+    this.all(params);
+  },
+
   detach: function (params, callback) {
     // NOTE: THIS DOES NOT MIRROR PYTHON-CINDERCLIENT'S DETACH METHOD.
     // Unlike python-cinderclient, this method *actually* detaches the
